@@ -1,5 +1,5 @@
-namespace NPFrida {
-	[DBus (name = "com.appspot.npfrida.RootApi")]
+namespace NPAinakan {
+	[DBus (name = "com.appspot.npainakan.RootApi")]
 	public interface RootApi : Object {
 		public abstract async string enumerate_devices () throws Error;
 		public abstract async string enumerate_processes (uint device_id) throws Error;
@@ -13,15 +13,15 @@ namespace NPFrida {
 	}
 
 	public class Dispatcher : GLib.Object {
-		protected unowned NPFrida.Object target_object;
+		protected unowned NPAinakan.Object target_object;
 		protected DBusMethodInfo ** methods;
 		protected DBusInterfaceMethodCallFunc dispatch_func;
 
-		public Dispatcher.for_object (NPFrida.Object obj) {
+		public Dispatcher.for_object (NPAinakan.Object obj) {
 			init_with_object (obj);
 		}
 
-		private extern void init_with_object (NPFrida.Object obj);
+		private extern void init_with_object (NPAinakan.Object obj);
 
 		public bool has_method (string name) {
 			return find_method_by_name (name) != null;

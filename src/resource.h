@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by npfrida.rc
+// Used by npainakan.rc
 
 // Next default values for new objects
 // 

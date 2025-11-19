@@ -1,6 +1,6 @@
-namespace NPFrida {
+namespace NPAinakan {
 	public class Root : Object, RootApi {
-		private Frida.DeviceManager manager = new Frida.DeviceManager ();
+		private Ainakan.DeviceManager manager = new Ainakan.DeviceManager ();
 		private Gee.ArrayList<Entry> entries = new Gee.ArrayList<Entry> ();
 
 		construct {
@@ -53,20 +53,20 @@ namespace NPFrida {
 			return generator.to_data (null);
 		}
 
-		private static string device_type_to_string (Frida.DeviceType type) {
+		private static string device_type_to_string (Ainakan.DeviceType type) {
 			switch (type) {
-				case Frida.DeviceType.LOCAL:
+				case Ainakan.DeviceType.LOCAL:
 					return "local";
-				case Frida.DeviceType.TETHER:
+				case Ainakan.DeviceType.TETHER:
 					return "tether";
-				case Frida.DeviceType.REMOTE:
+				case Ainakan.DeviceType.REMOTE:
 					return "remote";
 				default:
 					assert_not_reached ();
 			}
 		}
 
-		private static void append_icon (string member_name, Frida.Icon? icon, Json.Builder builder) {
+		private static void append_icon (string member_name, Ainakan.Icon? icon, Json.Builder builder) {
 			if (icon == null)
 				return;
 			var image = builder.set_member_name (member_name);
@@ -117,7 +117,7 @@ namespace NPFrida {
 			entries.remove (entry);
 		}
 
-		private async Frida.Device get_device_by_id (uint device_id) throws Error {
+		private async Ainakan.Device get_device_by_id (uint device_id) throws Error {
 			var devices = yield manager.enumerate_devices ();
 			var count = devices.size ();
 			for (var i = 0; i < count; i++) {
@@ -129,20 +129,20 @@ namespace NPFrida {
 		}
 
 		private class Entry : GLib.Object {
-			public Frida.Device device {
+			public Ainakan.Device device {
 				get;
 				private set;
 			}
 
-			public Frida.Session session {
+			public Ainakan.Session session {
 				get;
 				private set;
 			}
 
 			private weak Root parent;
-			private Frida.Script script;
+			private Ainakan.Script script;
 
-			public Entry (Root parent, Frida.Device device, Frida.Session session) {
+			public Entry (Root parent, Ainakan.Device device, Ainakan.Session session) {
 				this.parent = parent;
 				this.device = device;
 				this.session = session;

@@ -1,10 +1,10 @@
-#include "npfrida-byte-array.h"
+#include "npainakan-byte-array.h"
 
 #include <string.h>
 
-typedef struct _NPFridaByteArray NPFridaByteArray;
+typedef struct _NPAinakanByteArray NPAinakanByteArray;
 
-struct _NPFridaByteArray
+struct _NPAinakanByteArray
 {
   NPObject np_object;
   guint8 * data;
@@ -12,14 +12,14 @@ struct _NPFridaByteArray
 };
 
 static NPObject *
-npfrida_variant_allocate (NPP npp, NPClass * klass)
+npainakan_variant_allocate (NPP npp, NPClass * klass)
 {
-  NPFridaByteArray * obj;
+  NPAinakanByteArray * obj;
 
   (void) npp;
   (void) klass;
 
-  obj = g_slice_new (NPFridaByteArray);
+  obj = g_slice_new (NPAinakanByteArray);
   obj->data = NULL;
   obj->data_length = 0;
 
@@ -27,23 +27,23 @@ npfrida_variant_allocate (NPP npp, NPClass * klass)
 }
 
 static void
-npfrida_variant_deallocate (NPObject * npobj)
+npainakan_variant_deallocate (NPObject * npobj)
 {
-  NPFridaByteArray * self = reinterpret_cast<NPFridaByteArray *> (npobj);
+  NPAinakanByteArray * self = reinterpret_cast<NPAinakanByteArray *> (npobj);
 
   g_free (self->data);
 
-  g_slice_free (NPFridaByteArray, self);
+  g_slice_free (NPAinakanByteArray, self);
 }
 
 static void
-npfrida_variant_invalidate (NPObject * npobj)
+npainakan_variant_invalidate (NPObject * npobj)
 {
   (void) npobj;
 }
 
 static bool
-npfrida_variant_has_method (NPObject * npobj, NPIdentifier name)
+npainakan_variant_has_method (NPObject * npobj, NPIdentifier name)
 {
   const gchar * method_name;
 
@@ -59,9 +59,9 @@ npfrida_variant_has_method (NPObject * npobj, NPIdentifier name)
 }
 
 static bool
-npfrida_variant_invoke (NPObject * npobj, NPIdentifier name, const NPVariant * args, uint32_t arg_count, NPVariant * result)
+npainakan_variant_invoke (NPObject * npobj, NPIdentifier name, const NPVariant * args, uint32_t arg_count, NPVariant * result)
 {
-  NPFridaByteArray * self = reinterpret_cast<NPFridaByteArray *> (npobj);
+  NPAinakanByteArray * self = reinterpret_cast<NPAinakanByteArray *> (npobj);
 
   (void) args;
 
@@ -73,7 +73,7 @@ npfrida_variant_invoke (NPObject * npobj, NPIdentifier name, const NPVariant * a
     {
       if (args[0].type == NPVariantType_String)
       {
-        gchar * format = npfrida_npstring_to_cstring (&args[0].value.stringValue);
+        gchar * format = npainakan_npstring_to_cstring (&args[0].value.stringValue);
 
         if (strcmp (format, "base64") == 0)
         {
@@ -86,7 +86,7 @@ npfrida_variant_invoke (NPObject * npobj, NPIdentifier name, const NPVariant * a
         else
         {
           g_free (format);
-          npfrida_nsfuncs->setexception (npobj, "invalid format specified");
+          npainakan_nsfuncs->setexception (npobj, "invalid format specified");
           return true;
         }
 
@@ -94,7 +94,7 @@ npfrida_variant_invoke (NPObject * npobj, NPIdentifier name, const NPVariant * a
       }
       else
       {
-        npfrida_nsfuncs->setexception (npobj, "invalid argument");
+        npainakan_nsfuncs->setexception (npobj, "invalid argument");
         return true;
       }
     }
@@ -102,7 +102,7 @@ npfrida_variant_invoke (NPObject * npobj, NPIdentifier name, const NPVariant * a
     if (base64)
     {
       gchar * str = g_base64_encode (self->data, self->data_length);
-      npfrida_init_npvariant_with_string (result, str);
+      npainakan_init_npvariant_with_string (result, str);
       g_free (str);
     }
     else
@@ -118,7 +118,7 @@ npfrida_variant_invoke (NPObject * npobj, NPIdentifier name, const NPVariant * a
         g_string_append_printf (s, "%02x", (gint) self->data[i]);
       }
 
-      npfrida_init_npvariant_with_string (result, s->str);
+      npainakan_init_npvariant_with_string (result, s->str);
 
       g_string_free (s, TRUE);
     }
@@ -127,28 +127,28 @@ npfrida_variant_invoke (NPObject * npobj, NPIdentifier name, const NPVariant * a
   }
   else
   {
-    npfrida_nsfuncs->setexception (npobj, "no such method");
+    npainakan_nsfuncs->setexception (npobj, "no such method");
     return true;
   }
 }
 
 static bool
-npfrida_variant_invoke_default (NPObject * npobj, const NPVariant * args, uint32_t arg_count, NPVariant * result)
+npainakan_variant_invoke_default (NPObject * npobj, const NPVariant * args, uint32_t arg_count, NPVariant * result)
 {
   (void) args;
   (void) arg_count;
   (void) result;
 
-  npfrida_nsfuncs->setexception (npobj, "invalid operation");
+  npainakan_nsfuncs->setexception (npobj, "invalid operation");
   return true;
 }
 
 static bool
-npfrida_variant_has_property (NPObject * npobj, NPIdentifier name)
+npainakan_variant_has_property (NPObject * npobj, NPIdentifier name)
 {
-  NPFridaByteArray * self = reinterpret_cast<NPFridaByteArray *> (npobj);
+  NPAinakanByteArray * self = reinterpret_cast<NPAinakanByteArray *> (npobj);
 
-  if (npfrida_nsfuncs->identifierisstring (name))
+  if (npainakan_nsfuncs->identifierisstring (name))
   {
     const gchar * property_name;
 
@@ -160,7 +160,7 @@ npfrida_variant_has_property (NPObject * npobj, NPIdentifier name)
   {
     int32_t index;
 
-    index = npfrida_nsfuncs->intfromidentifier (name);
+    index = npainakan_nsfuncs->intfromidentifier (name);
     if (index >= 0 && index < self->data_length)
       return true;
   }
@@ -169,11 +169,11 @@ npfrida_variant_has_property (NPObject * npobj, NPIdentifier name)
 }
 
 static bool
-npfrida_variant_get_property (NPObject * npobj, NPIdentifier name, NPVariant * result)
+npainakan_variant_get_property (NPObject * npobj, NPIdentifier name, NPVariant * result)
 {
-  NPFridaByteArray * self = reinterpret_cast<NPFridaByteArray *> (npobj);
+  NPAinakanByteArray * self = reinterpret_cast<NPAinakanByteArray *> (npobj);
 
-  if (npfrida_nsfuncs->identifierisstring (name))
+  if (npainakan_nsfuncs->identifierisstring (name))
   {
     const gchar * property_name;
 
@@ -188,7 +188,7 @@ npfrida_variant_get_property (NPObject * npobj, NPIdentifier name, NPVariant * r
   {
     int32_t index;
 
-    index = npfrida_nsfuncs->intfromidentifier (name);
+    index = npainakan_nsfuncs->intfromidentifier (name);
     if (index >= 0 && index < self->data_length)
     {
       INT32_TO_NPVARIANT (self->data[index], *result);
@@ -196,21 +196,21 @@ npfrida_variant_get_property (NPObject * npobj, NPIdentifier name, NPVariant * r
     }
   }
 
-  npfrida_nsfuncs->setexception (npobj, "invalid property");
+  npainakan_nsfuncs->setexception (npobj, "invalid property");
   return true;
 }
 
-static NPClass npfrida_variant_class =
+static NPClass npainakan_variant_class =
 {
   NP_CLASS_STRUCT_VERSION,
-  npfrida_variant_allocate,
-  npfrida_variant_deallocate,
-  npfrida_variant_invalidate,
-  npfrida_variant_has_method,
-  npfrida_variant_invoke,
-  npfrida_variant_invoke_default,
-  npfrida_variant_has_property,
-  npfrida_variant_get_property,
+  npainakan_variant_allocate,
+  npainakan_variant_deallocate,
+  npainakan_variant_invalidate,
+  npainakan_variant_has_method,
+  npainakan_variant_invoke,
+  npainakan_variant_invoke_default,
+  npainakan_variant_has_property,
+  npainakan_variant_get_property,
   NULL,
   NULL,
   NULL,
@@ -218,11 +218,11 @@ static NPClass npfrida_variant_class =
 };
 
 NPObject *
-npfrida_byte_array_new (NPP npp, const guint8 * data, gint data_length)
+npainakan_byte_array_new (NPP npp, const guint8 * data, gint data_length)
 {
-  NPFridaByteArray * obj;
+  NPAinakanByteArray * obj;
 
-  obj = reinterpret_cast<NPFridaByteArray *> (npfrida_nsfuncs->createobject (npp, &npfrida_variant_class));
+  obj = reinterpret_cast<NPAinakanByteArray *> (npainakan_nsfuncs->createobject (npp, &npainakan_variant_class));
   obj->data = (data_length != 0) ? static_cast<guint8 *> (g_memdup (data, data_length)) : NULL;
   obj->data_length = data_length;
 
@@ -230,7 +230,7 @@ npfrida_byte_array_new (NPP npp, const guint8 * data, gint data_length)
 }
 
 NPClass *
-npfrida_variant_get_class (void)
+npainakan_variant_get_class (void)
 {
-  return &npfrida_variant_class;
+  return &npainakan_variant_class;
 }

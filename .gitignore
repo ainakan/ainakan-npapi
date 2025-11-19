@@ -25,8 +25,8 @@
 /m4/lt*.m4
 /src/Makefile
 /src/Makefile.in
-/src/npfrida-api.c
-/src/npfrida-root.c
-/src/npfrida.h
-/src/npfrida.vapi
+/src/npainakan-api.c
+/src/npainakan-root.c
+/src/npainakan.h
+/src/npainakan.vapi
 /stamp-h1

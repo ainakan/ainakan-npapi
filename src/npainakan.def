@@ -1,4 +1,4 @@
-LIBRARY npfrida.dll
+LIBRARY npainakan.dll
 
 EXPORTS
 	NP_GetEntryPoints     @1
